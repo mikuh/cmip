@@ -1,5 +1,5 @@
-from xdnlp.word_discover.ngram import Ngrams
-from xdnlp.word_discover.word_discover import WordDiscover
+from cmip.word_discover.ngram import Ngrams
+from cmip.word_discover.word_discover import WordDiscover
 
 ngram = Ngrams()
 

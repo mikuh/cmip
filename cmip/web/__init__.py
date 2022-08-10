@@ -1,7 +1,7 @@
-from xdnlp.web.simhash_utils import SimHash
-from xdnlp.web.html import Html
-from xdnlp.web.fetch_html import Browser
-from xdnlp.web.utils import hamming_distance_array, is_valid_url, url2domain, top_domain, decode_image
+from cmip.web.simhash_utils import SimHash
+from cmip.web.html import Html
+from cmip.web.fetch_html import Browser
+from cmip.web.utils import hamming_distance_array, is_valid_url, url2domain, top_domain, decode_image
 
 sh = SimHash()
 html = Html()

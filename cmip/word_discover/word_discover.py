@@ -1,6 +1,6 @@
-from xdnlp.word_discover.ngram import Ngrams
-from xdnlp.utils import logging_run_time, read_lines
-from xdnlp.utils import default_logger as logging
+from cmip.word_discover.ngram import Ngrams
+from cmip.utils import logging_run_time, read_lines
+from cmip.utils import default_logger as logging
 from collections import Counter
 from tqdm import tqdm
 import os

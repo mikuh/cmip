@@ -1,6 +1,6 @@
-from xdnlp.text.prefix_set import PrefixSet
-from xdnlp.text.normalize import Normalize
-from xdnlp.text.encoder import FeatureEncoder
+from cmip.text.prefix_set import PrefixSet
+from cmip.text.normalize import Normalize
+from cmip.text.encoder import FeatureEncoder
 from joblib import Parallel, delayed
 import multiprocessing
 import re

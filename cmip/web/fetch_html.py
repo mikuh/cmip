@@ -4,8 +4,8 @@ from pyppeteer import launch
 import asyncio
 import aiofiles
 import os
-from xdnlp.web.utils import url2domain, decode_image
-from xdnlp.utils import default_logger
+from cmip.web.utils import url2domain, decode_image
+from cmip.utils import default_logger
 import aiohttp
 from io import BytesIO
 from PIL import Image

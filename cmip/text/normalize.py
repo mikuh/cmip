@@ -1,4 +1,4 @@
-from xdnlp.utils import md5, package_path, read_lines
+from cmip.utils import md5, package_path, read_lines
 import os
 
 

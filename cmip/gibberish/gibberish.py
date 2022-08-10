@@ -1,6 +1,6 @@
 from nltk.util import ngrams
 from collections import Counter
-from xdnlp.utils import read_lines
+from cmip.utils import read_lines
 import math
 import joblib
 import tqdm
@@ -53,7 +53,7 @@ class Gibberish(object):
 
 if __name__ == '__main__':
     gib = Gibberish()
-    # gib.adapt("/home/geb/PycharmProjects/xdnlp/local/gibberish_data/data.txt")
+    # gib.adapt("/home/geb/PycharmProjects/cmip/local/gibberish_data/data.txt")
     # joblib.dump({"counts": gib.counts, "total": gib.total}, "gib.model")
     gib.load("gib.model")
     e = gib.average_prob("ahsfuia")

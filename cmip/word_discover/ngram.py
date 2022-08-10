@@ -2,7 +2,7 @@ import pickle
 import tqdm
 from nltk.util import ngrams
 from collections import Counter
-from xdnlp.utils import read_lines, logging_run_time
+from cmip.utils import read_lines, logging_run_time
 
 
 class Ngrams(object):

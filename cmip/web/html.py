@@ -15,10 +15,11 @@ class Html(object):
         self.re_content = re.compile(r'<script[\s\S]+?</script>|<[^>]+>|\s', re.S)
 
         self.re_wechat = re.compile(
-            r'((微信|vx)[^a-zA-Z\d]{0,6}([a-zA-Z\d]{1}[a-zA-Z\d_-]{5,19}))|(([a-zA-Z\d]{1}[a-zA-Z\d_-]{5,19})[^a-zA-Z\d]{0,6}(微信|vx))',
+            r'((微信|weixin)[^a-zA-Z\d]{0,6}([a-zA-Z\d]{1}[a-zA-Z\d_-]{5,19}))|(([a-zA-Z\d]{1}[a-zA-Z\d_-]{5,19})[^a-zA-Z\d]{0,6}(微信|weixin))',
             re.S)
         self.re_qq = re.compile(r'(qq[^\d]{0,4}(\d{8,12}))', re.S)
         self.re_phone = re.compile(r'[^\d|^](1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8})[^\d|$]', re.S)
+        self.re_email = re.compile(r'([A-Za-z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)', re.S)
 
         self.tag2code = {'!--...--': '00', '!DOCTYPE': '01', 'a': '02', 'abbr': '03', 'acronym': '04', 'address': '05',
                          'applet': '06', 'area': '07', 'article': '08', 'aside': '09', 'audio': '0a', 'b': '0b',
@@ -138,15 +139,15 @@ class Html(object):
             return ""
         return "".join([self.tag_hash(tag) for tag in tags])
 
-    def extract_contact(self, html: str, wechat=True, qq=True, phone=True) -> dict:
+    def extract_contact(self, html: str, wechat=True, qq=True, phone=True, email=False) -> dict:
         content = self.get_content(html, " ").lower()
         contacts = {}
         if wechat:
             contacts["wechat"] = set()
             for x in self.re_wechat.findall(content):
-                if x[2] and x[2] not in ('微信', 'vx'):
+                if x[2] and x[2] not in ('微信', 'weixin'):
                     contacts["wechat"].add(x[2])
-                elif x[1] and x[1] not in ('微信', 'vx'):
+                elif x[1] and x[1] not in ('微信', 'weixin'):
                     contacts["wechat"].add(x[1])
         if phone:
             contacts["phone"] = set([x[0] for x in self.re_phone.findall(content)])
@@ -154,6 +155,10 @@ class Html(object):
             contacts["qq"] = set()
             for x in self.re_qq.findall(content):
                 contacts["qq"].add(x[1])
+        if email:
+            contacts["email"] = set()
+            for x in self.re_email.findall(content):
+                contacts["email"].add(x[0])
 
         return contacts
 
@@ -563,3 +568,7 @@ K8凯发国际 <br />凯发k8国际_K8凯发国际官网-凯发k8国际_K8凯发
 
 </body>
 </html>"""))
+
+    re_email = re.compile(r'([A-Za-z0-9-_]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)', re.S)
+    a = re_email.findall("我的邮箱zhangsan-001@gmail.com，欢迎联系")
+    print(a)

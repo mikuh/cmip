@@ -1,7 +1,7 @@
 import re
 import os
-from xdnlp.utils import package_path, read_lines
-from xdnlp.text import Normalize, PrefixSet
+from cmip.utils import package_path, read_lines
+from cmip.text import Normalize, PrefixSet
 
 norm = Normalize()
 
