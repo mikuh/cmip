@@ -31,7 +31,7 @@ async def event_handler_save_images(response, save_path) -> None:
         print(e)
 
 
-async def get_web(url, save_path):
+async def get_web(url, save_path, save_images=True):
     try:
         async with async_playwright() as p:
             browser_type = p.chromium
@@ -41,8 +41,9 @@ async def get_web(url, save_path):
             save_dir = os.path.join(save_path, domain)
             if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
-            page.on("response", lambda response: asyncio.create_task(
-                event_handler_save_images(response, save_dir)))
+            if save_images:
+                page.on("response", lambda response: asyncio.create_task(
+                    event_handler_save_images(response, save_dir)))
             await page.goto(url)
             await page.wait_for_timeout(4000)
             html = await page.content()
@@ -59,14 +60,14 @@ async def get_web(url, save_path):
         print(e)
 
 
-def web_scraping(urls, save_path, batch_size=4):
-    async def batch_web_scraping(batch, save_path):
-        await asyncio.gather(*[get_web(url, save_path) for url in batch])
+def web_scraping(urls, save_path, batch_size=4, save_images=True):
+    async def batch_web_scraping(batch, save_path, save_images):
+        await asyncio.gather(*[get_web(url, save_path, save_images) for url in batch])
 
     for _ in tqdm.tqdm(range(len(urls)//batch_size + 1), total=len(urls)//batch_size + 1, desc="Crawler Batchs:"):
         batch = urls[:batch_size]
         urls = urls[batch_size:]
-        asyncio.run(batch_web_scraping(batch, save_path))
+        asyncio.run(batch_web_scraping(batch, save_path, save_images))
 
 
 
@@ -86,4 +87,5 @@ if __name__ == '__main__':
                 line = "http://" + line
                 urls.append(line)
     print("域名数量：", len(urls))
-    web_scraping(urls, outdir, batch_size=10)
+    for _ in range(3):
+        web_scraping(urls, outdir, batch_size=10, save_images=False)
