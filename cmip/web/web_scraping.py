@@ -44,48 +44,54 @@ async def get_web(url, save_path, save_images=True):
             if save_images:
                 page.on("response", lambda response: asyncio.create_task(
                     event_handler_save_images(response, save_dir)))
-            await page.goto(url)
-            await page.wait_for_timeout(4000)
+            await page.goto(url, timeout=0)
+            await page.wait_for_timeout(10000)
+            # await page.wait_for_load_state("load")
+            await page.reload(wait_until="networkidle")
             html = await page.content()
             async with aiofiles.open(os.path.join(save_path, domain, "dynamic.html"), 'w', encoding='utf-8') as f:
                 await f.write(html)
             images = await page.query_selector_all('img')
-            for idx, src in enumerate(set([await page.evaluate('(element) => element.src', image) for image in images])):
+            for idx, src in enumerate(
+                    set([await page.evaluate('(element) => element.src', image) for image in images])):
                 if src.startswith("data:image"):
                     async with aiofiles.open(os.path.join(save_path, domain, f"{idx}.jpg"), 'wb') as f:
                         await f.write(decode_image(src))
             # await page.screenshot(path=f'example-{browser_type.name}.png', full_page=True)
+            await page.wait_for_load_state("domcontentloaded")
+            await page.wait_for_load_state("networkidle")
             await browser.close()
     except Exception as e:
-        print(e)
+        # await browser.close()
+        print(">>", e)
+        return
 
 
 def web_scraping(urls, save_path, batch_size=4, save_images=True):
-    async def batch_web_scraping(batch, save_path, save_images):
-        await asyncio.gather(*[get_web(url, save_path, save_images) for url in batch])
 
-    for _ in tqdm.tqdm(range(len(urls)//batch_size + 1), total=len(urls)//batch_size + 1, desc="Crawler Batchs:"):
+    for _ in tqdm.tqdm(range(len(urls) // batch_size + 1), total=len(urls) // batch_size + 1, desc="Crawler Batchs:"):
         batch = urls[:batch_size]
+        async def m(batch):
+            await asyncio.gather(*[get_web(url, save_path, save_images) for url in batch])
+        asyncio.run(m(batch))
         urls = urls[batch_size:]
-        asyncio.run(batch_web_scraping(batch, save_path, save_images))
-
-
 
 
 if __name__ == '__main__':
 
     urls = ["https://baidu.com", "https://qq.com"]
 
-    outdir = r"C:\data\家庭高危域名20221025"
+    outdir = r"C:\data\家庭高危域名20221107"
     urls = []
-    with open(r"C:\data\家庭下高危域名1025.txt", 'r', encoding='utf-8') as f:
+    with open(r"C:\data\家庭下高危域名1107.txt", 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if os.path.exists(os.path.join(outdir, line, "dynamic.html")):
                 continue
+                # pass
             if not line.startswith("http"):
                 line = "http://" + line
                 urls.append(line)
     print("域名数量：", len(urls))
-    for _ in range(3):
-        web_scraping(urls, outdir, batch_size=10, save_images=False)
+    for i in range(3):
+        web_scraping(urls, outdir, batch_size=10, save_images=(i % 2 == 0))
