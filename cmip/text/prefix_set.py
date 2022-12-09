@@ -1,5 +1,3 @@
-
-
 class PrefixSet(object):
 
     def __init__(self):
@@ -40,50 +38,55 @@ class PrefixSet(object):
     def remove_keyword(self, word: str):
         self._prefix_dic[word] = 0
 
-    def extract_keywords(self, sentence: str, longest_only=False) -> list:
+    def extract_keywords(self, sentence: str, skip_match=False) -> list:
         """Extract keywords involved in sentences
         Args:
             sentence: str, Sentences to be extracted.
-            longest_only: bool,Whether to match only the longest keyword,default False;
-                        for a example sentence: `category`, and keywords is ['cat', 'category'],
-                        if set False, return: ['cat', 'category'],
-                        if set True, return the longest only: ['category']
+            skip_match: bool,When the keywords are matched, whether to skip this area and
+                        no longer detect the communicative part of words;
+                        for a example sentence: `cattention`, and keywords is ['cat', 'attention'],
+                        if set False, return: ['cat', 'attention'],
+                        if set True, return  first match only: ['cat']
         """
         N = len(sentence)
         keywords = []
-        for i in range(N):
+        i = 0
+        while i < N:
             flag = sentence[i]
             j = i
             word = None
             while j < N and (flag in self._prefix_dic):
                 if self._prefix_dic[flag] == 1:
-                    if not longest_only:
+                    if not skip_match:
                         keywords.append(flag)
-                    else:
-                        word = flag
+                    word = flag
                 j += 1
                 flag = sentence[i: j + 1]
-            if longest_only and word:
+            if word and skip_match:
                 keywords.append(word)
+                i += len(word) - 1
+            i += 1
         return keywords
 
-    def extract_keywords_with_index(self, sentence: str, longest_only=False):
+    def extract_keywords_with_index(self, sentence: str, skip_match=False):
         N = len(sentence)
         keywords = []
-        for i in range(N):
+        i = 0
+        while i < N:
             flag, index = sentence[i], [i, i + 1]
             j = i
             word = None
             while j < N and (flag in self._prefix_dic):
                 if self._prefix_dic[flag] == 1:
-                    if not longest_only:
+                    if not skip_match:
                         keywords.append((flag, index))
-                    else:
-                        word, _index = flag, index
+                    word, _index = flag, index
                 j += 1
                 flag, index = sentence[i: j + 1], [i, j + 1]
-            if longest_only and word:
+            if word and skip_match:
                 keywords.append((word, _index))
+                i += len(word) - 1
+            i += 1
         return keywords
 
     def replace_keywords(self, sentence: str) -> str:
@@ -112,3 +115,10 @@ class PrefixSet(object):
                 new_sentence += sentence[i]
                 i += 1
         return new_sentence
+
+
+if __name__ == '__main__':
+    ps = PrefixSet()
+    ps.add_keywords_from_list(["中华人民共和国", "国人", "共和国"])
+    founds = ps.extract_keywords("我是中华人民共和国人", skip_match=True)
+    print(founds)
