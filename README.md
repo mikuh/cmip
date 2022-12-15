@@ -5,3 +5,5 @@ An efficient information processing program.
 ```shell
 pip install cmip
 ```
+
+## Usage
