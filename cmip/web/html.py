@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
     print(ht.get_title(html))
 
-    print(ht.dom_tree(html))
+    print(ht.dom_tree("<html><head><title></title></head><body><div></div><footer></footer><body></html>"))
 
     print(ht.get_images(html, "https://baidu.com"))
 

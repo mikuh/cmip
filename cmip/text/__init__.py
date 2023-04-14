@@ -1,6 +1,5 @@
 from cmip.text.ac_automation import ACAutomation
 from cmip.text.normalize import Normalize
-from cmip.text.encoder import FeatureEncoder
 from joblib import Parallel, delayed
 import multiprocessing
 import re
@@ -14,14 +13,12 @@ class Text(object):
     def __init__(self, case_sensitive=True):
         self.aca = ACAutomation(case_sensitive=case_sensitive)
         self.norm = Normalize()
-        self.feature_encoder = FeatureEncoder()
         self.add_keywords_from_list = self.aca.add_keywords_from_list
         self.get_keywords = self.aca.get_keywords
         self.replace_keywords = self.aca.replace_keywords
         self.extract_keywords = self.aca.extract_keywords
         self.normalize = self.norm.normalize
         self.pinyin = self.norm.pinyin
-        self.encode = self.feature_encoder.encode
 
     def clean(self, sentence, patten: str = None, keep_space: bool = True, norm: bool = True, lower: bool = True,
               digital_norm: bool = False, max_repeat: int = 0) -> str:

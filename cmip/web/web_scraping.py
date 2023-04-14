@@ -81,9 +81,9 @@ if __name__ == '__main__':
 
     urls = ["https://baidu.com", "https://qq.com"]
 
-    outdir = r"C:\data\家庭高危域名20221212"
+    outdir = r"C:\data\家庭高危域名20230227"
     urls = []
-    with open(r"C:\data\家庭下高危域名1212.txt", 'r', encoding='utf-8') as f:
+    with open(r"C:\data\家庭下高危域名0227.txt", 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if os.path.exists(os.path.join(outdir, line, "dynamic.html")):
@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     for i in range(3):
         if i == 0:
-            _urls = urls[70:]
+            _urls = urls
         else:
             _urls = urls
         web_scraping(_urls, outdir, batch_size=10, save_images=(i % 2 == 0))
