@@ -276,7 +276,7 @@ for keywords_length in range(0, 200001, 10000):
     fig, ax = plt.subplots()
     ax.plot(X, y1, label="flashtext")
     # ax.plot(X, y2)
-    ax.plot(X, y3, label="xdnlp")
+    ax.plot(X, y3, label="CMIP")
 
     plt.xlabel("Num of keywords")
     plt.ylabel("Time(sec)")

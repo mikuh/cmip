@@ -14,7 +14,7 @@ class Text(object):
         self.aca = ACAutomation(case_sensitive=case_sensitive)
         self.norm = Normalize()
         self.add_keywords_from_list = self.aca.add_keywords_from_list
-        self.get_keywords = self.aca.get_keywords
+        self.get_keywords = self.aca.get_all_keywords
         self.replace_keywords = self.aca.replace_keywords
         self.extract_keywords = self.aca.extract_keywords
         self.normalize = self.norm.normalize
