@@ -78,9 +78,18 @@ async def web_scraping(urls, output_path="output", max_concurrent_tasks=10, save
 
 
 if __name__ == "__main__":
-    urls = [
-        "https://baidu.com",
-        "https://qq.com",
-        # ...更多的URL
-    ]
-    asyncio.run(web_scraping(urls))
+    # urls = [
+    #     "https://baidu.com:443",
+    #     "https://qq.com",
+    #     # ...更多的URL
+    # ]
+    # asyncio.run(web_scraping(urls))
+    # import validators
+    from urllib.parse import urlparse
+    # if validators.url("http://dlsbbjb--com--02396907a64d3.wsipv6.com"):
+    #     print("miao")
+    # print(urlparse("http://dlsbbjb--com--02396907a64d3.wsipv6.com").netloc.lower().strip('.'))
+    # print(url2domain("http://dlsbbjb--com--02396907a64d3.wsipv6.com"))
+
+
+    print(url2domain("https://www.baidu.com:8000/asdasdasd"))

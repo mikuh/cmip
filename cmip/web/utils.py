@@ -14,7 +14,8 @@ def is_valid_url(url: str) -> str:
 
 def url2domain(url: str) -> str:
     if validators.url(url):
-        return urlparse(url).netloc.lower().strip('.')
+        return urlparse(url).hostname.lower().strip('.')
+        # return urlparse(url).netloc.lower().strip('.')
 
 
 def top_domain(domain: str) -> str:
