@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="cmip",
-    version="0.0.6",
+    version="0.0.8",
     author="geb",
     author_email="853934146@qq.com",
     description="An efficient information processing program.",
