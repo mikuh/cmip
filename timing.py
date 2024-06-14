@@ -6,6 +6,9 @@ import time
 
 from flashtext import KeywordProcessor
 import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
+plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+
 class Trie(object):
 
     def __init__(self, case_sensitive=False):
@@ -276,7 +279,7 @@ for keywords_length in range(0, 200001, 10000):
     fig, ax = plt.subplots()
     ax.plot(X, y1, label="flashtext")
     # ax.plot(X, y2)
-    ax.plot(X, y3, label="CMIP")
+    ax.plot(X, y3, label="该多模态信息处理工具")
 
     plt.xlabel("Num of keywords")
     plt.ylabel("Time(sec)")
